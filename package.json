@@ -1,0 +1,21 @@
+{
+  "name": "@nag/node-cache",
+  "version": "1.0.0",
+  "description": "nodejs in-memory cache that backs up to redis",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "author": "Nagarjuna Yendluri",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nagyen/node-cache"
+  },
+  "devDependencies": {
+    "@types/node": "^10.9.2",
+    "nodemon": "^1.18.3",
+    "ts-node": "^7.0.1",
+    "typescript": "^3.0.1"
+  }
+}
