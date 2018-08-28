@@ -1,4 +1,5 @@
 import { InMemoryCacheProvider } from "./providers/in-memory-cache.provider";
+import { RedisCacheProvider } from "./providers/redis-cache.provider";
 
 export interface CacheOptions {
     key?: string;
@@ -6,7 +7,7 @@ export interface CacheOptions {
 }
 
 // using singleton for InMemoryCacheProvider
-export const inMemoryCache = new InMemoryCacheProvider();
+export const inMemoryCache = new RedisCacheProvider();
 
 export function Cache(options: CacheOptions = {}) {
     return function decorator(target: object, methodName: string, descriptor: PropertyDescriptor) {
