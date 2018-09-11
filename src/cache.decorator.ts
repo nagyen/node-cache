@@ -1,13 +1,17 @@
-import { InMemoryCacheProvider } from "./providers/in-memory-cache.provider";
-import { RedisCacheProvider } from "./providers/redis-cache.provider";
+import { CacheFlow } from "./cache-flow";
+
+export interface CacheTTL {
+    inMemTTL: number;
+    redisTTL: number;
+}
 
 export interface CacheOptions {
     key?: string;
-    ttl?: number;
+    ttl?: number | CacheTTL;
 }
 
-// using singleton for InMemoryCacheProvider
-export const inMemoryCache = new RedisCacheProvider();
+// using singleton for CacheFlow
+export const cache = new CacheFlow();
 
 export function Cache(options: CacheOptions = {}) {
     return function decorator(target: object, methodName: string, descriptor: PropertyDescriptor) {
@@ -20,10 +24,9 @@ export function Cache(options: CacheOptions = {}) {
                 cacheKey = `${className}:${methodName}:${JSON.stringify(args)}`;
             }
 
-            // console.log('Cache Key:', className, methodName, cacheKey);
             console.log('checking cache for:', cacheKey);
 
-            const cacheValue = await inMemoryCache.get(cacheKey);
+            const cacheValue = await cache.get(options);
             if (cacheValue !== undefined) {
                 console.log('checking hit for:', cacheKey);
                 return cacheValue;
@@ -41,7 +44,7 @@ export function Cache(options: CacheOptions = {}) {
             }
             console.log('setting cache for:', cacheKey);
 
-            await inMemoryCache.set(cacheKey, methodResult, options.ttl);
+            await cache.set(methodResult, options);
             return methodResult;
         };
 
